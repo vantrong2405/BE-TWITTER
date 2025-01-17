@@ -1,0 +1,8 @@
+# Ignore environment variable files
+# .env
+# .env.production
+# .env.staging
+
+# Other files and directories to ignore
+node_modules/
+dist/
