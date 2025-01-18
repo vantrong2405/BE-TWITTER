@@ -98,7 +98,7 @@ class UserService {
       })
     )
 
-    await sendMail({
+    sendMail({
       toEmail: payload.email,
       subjectEmail: 'Verify email',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
