@@ -98,7 +98,7 @@ class UserService {
       })
     )
 
-    sendMail({
+  sendMail({
       toEmail: payload.email,
       subjectEmail: 'Verify email',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -106,7 +106,7 @@ class UserService {
         user_send: 'Dovianorith',
         introduce: 'Verify email',
         description: 'Welcome to our community! To complete your registration, please click the button below to verify your email address.',
-        link: `http://localhost:3000/verify-email?token=${email_verify_token}`
+        link: `http://localhost:3000/auth/verify-email?token=${email_verify_token}`
       })
     });
     return {
@@ -261,7 +261,7 @@ class UserService {
       }
     )
 
-    await sendMail({
+  sendMail({
       toEmail: user.email,
       subjectEmail: 'Verify email',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -269,7 +269,7 @@ class UserService {
         user_send: 'Dovianorith',
         introduce: 'Verify email',
         description: 'Welcome to our community! To complete your registration, please click the button below to verify your email address.',
-        link: `http://localhost:3000/verify-email?token=${email_verify_token}`
+        link: `http://localhost:3000/auth/verify-email?token=${email_verify_token}`
       })
     });
 
@@ -319,7 +319,7 @@ class UserService {
       }
     })
 
-    await sendMail({
+  sendMail({
       toEmail: email,
       subjectEmail: 'Forgot Password',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -327,7 +327,7 @@ class UserService {
         user_send: 'Dovianorith',
         introduce: 'Reset Password',
         description: 'We received a request to reset your password.Dont worry, we ve got you covered! Click the button below to set a new password.',
-        link: `https://portfolio-van-trongs-projects.vercel.app?token=${forgot_password_token}`
+        link: `http://localhost:3000/auth/reset-password?token=${forgot_password_token}`
       })
     });
     //check email forgot
