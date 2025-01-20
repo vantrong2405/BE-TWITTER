@@ -98,7 +98,7 @@ class UserService {
       })
     )
 
-  sendMail({
+    sendMail({
       toEmail: payload.email,
       subjectEmail: 'Verify email',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -261,7 +261,7 @@ class UserService {
       }
     )
 
-  sendMail({
+    sendMail({
       toEmail: user.email,
       subjectEmail: 'Verify email',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -319,7 +319,7 @@ class UserService {
       }
     })
 
-  sendMail({
+    sendMail({
       toEmail: email,
       subjectEmail: 'Forgot Password',
       htmlContent: readingEmailTemplate(TEMPLATE_EMAIL, {
@@ -472,7 +472,55 @@ class UserService {
     )
     return result
   }
+
+  async getFriends(user_id: string) {
+    if (!ObjectId.isValid(user_id)) {
+      throw new Error('Invalid user_id');
+    }
+
+    const user_id_obj = new ObjectId(user_id);
+
+    const friends = await databaseService.followers
+      .find({
+        $or: [
+          { user_id: user_id_obj },
+          { followed_user_id: user_id_obj }
+        ]
+      })
+      .toArray();
+
+    if (!friends.length) {
+      return [];
+    }
+
+    const friendUserIds = friends.map((friend) =>
+      friend.user_id.equals(user_id_obj)
+        ? friend.followed_user_id
+        : friend.user_id
+    );
+
+    const friendDetails = await databaseService.users
+      .find(
+        { _id: { $in: friendUserIds } },
+        {
+          projection: {
+            password: 0,
+            forgot_password_token: 0,
+            email_verify_token: 0,
+            verify: 0,
+            create_at: 0,
+            update_at: 0,
+            permisson_id: 0,
+            role: 0
+          }
+        }
+      )
+      .toArray();
+
+    return friendDetails;
+  }
+
 }
 
-const userService = new UserService();  // tạo ra 1 instance của UserService        
+const userService = new UserService();
 export default userService

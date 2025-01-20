@@ -147,7 +147,6 @@ export const getMeController = async (req: Request, res: Response, next: NextFun
   const result = await userService.getMe(user_id)
 
   return res.json({
-    message: USERS_MESSAGES.GET_ME_SUCCESS,
     result
   })
 }
@@ -161,6 +160,15 @@ export const updateMeController = async (req: Request<ParamsDictionary, any, Upd
     result: user
   })
 }
+
+export const getAllUserController = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const users = await userService.getFriends(user_id)
+  return res.json({
+    result: users
+  })
+}
+
 export const followController = async (req: Request<ParamsDictionary, any, followersReqBody>, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_authorization
   const { followed_user_id } = req.body
