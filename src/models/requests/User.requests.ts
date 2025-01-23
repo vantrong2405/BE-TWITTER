@@ -7,6 +7,7 @@ export interface RegisterReqBody {
   password: string
   confirm_password: string
   date_of_birth: string
+  verify ?: UserVerifyStatus
 }
 
 export interface UpdateMeReqBody {

@@ -72,7 +72,7 @@ class UserService {
     const user_id = new ObjectId()
     const email_verify_token = await this.signEmailVerifyToken({
       user_id: (user_id as ObjectId).toString(),
-      verify: UserVerifyStatus.Unverified
+      verify: payload.verify === UserVerifyStatus.Verified ? UserVerifyStatus.Verified : UserVerifyStatus.Unverified
     })
     await databaseService.users.insertOne(
       new User({
@@ -205,7 +205,8 @@ class UserService {
         password: passwordRandom,
         confirm_password: passwordRandom,
         date_of_birth: new Date().toISOString(),
-        name: userInfo.email
+        name: userInfo.email.replace('@gmail.com', ''),
+        verify: UserVerifyStatus.Verified
       })
       return { ...data, newUser: 1, verify: UserVerifyStatus.Unverified }
     }
