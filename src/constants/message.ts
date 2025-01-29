@@ -99,6 +99,7 @@ export const TWEET_MESSAGES = {
   TWEET_IS_NOT_PUBLIC: 'Tweet is not public',
   GET_TWEET_CHILDREN_SUCCESS: 'Get tweet children successfully',
   GET_NEWFEEDS_SUCCESS: 'Get newfeeds successfully',
+  DELETE_TWEET_SUCCESSFULLY: 'Delete tweet successfully',
 } as const
 
 export const BOOKMARK_MESSAGES = {

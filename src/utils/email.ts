@@ -7,10 +7,10 @@
 //https://tabular.email/editor/FromdemotemplateMinimalnotification--5c11315c-7d34-453b-a6c2-bd042809ef99
 //https://studio.unlayer.com/create/warm-lead-email
 
-import { createTransport, SendMailOptions, SentMessageInfo } from 'nodemailer';
-import { readFileSync } from 'fs';
-import { compile } from 'handlebars';
-import { envConfig } from '~/utils/config';
+import { createTransport, SendMailOptions, SentMessageInfo } from 'nodemailer'
+import { readFileSync } from 'fs'
+import { compile } from 'handlebars'
+import { envConfig } from '~/utils/config'
 
 
 const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASSWORD, EMAIL_FROM } = envConfig
@@ -31,23 +31,19 @@ export const sendMail = async ({ toEmail, subjectEmail, htmlContent }: { toEmail
       to: toEmail,
       subject: subjectEmail,
       html: htmlContent
-    };
+    }
 
-    const info: SentMessageInfo = await transporter.sendMail(message);
-    console.log('Email sent: ' + info.response);
-    return info;
+    const info: SentMessageInfo = await transporter.sendMail(message)
+    console.log('Email sent: ' + info.response)
+    return info
   } catch (error) {
-    console.error('Error sending email:', error);
-    throw new Error('Failed to send email');
+    console.error('Error sending email:', error)
+    throw new Error('Failed to send email')
   }
-};
-
-// Reading the template content
-
-
+}
 
 export const readingEmailTemplate = (templatePath: string, data: object) => {
-  const emailTemplate = readFileSync(templatePath, 'utf-8') //  Đọc nội dung file template
-  const compiledTemplate = compile(emailTemplate) // Biên dịch template thành hàm
+  const emailTemplate = readFileSync(templatePath, 'utf-8') 
+  const compiledTemplate = compile(emailTemplate) 
   return compiledTemplate(data)
 }

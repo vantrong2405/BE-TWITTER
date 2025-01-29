@@ -87,9 +87,6 @@ const insertMultipleTweets = async (ids: ObjectId[]) => {
   return result
 }
 insertMultipleUsers(user).then((ids) => {
-  // console.log('ids', ids)
-  // insertMultipleTweets(ids)
   followMultipleUsers(new ObjectId(MYID), ids)
   console.log('Faker Done')
-  // createRandomTweet(new ObjectId(MYID))
 })

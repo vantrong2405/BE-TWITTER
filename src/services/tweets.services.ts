@@ -490,6 +490,13 @@ class TweetService {
       total: total[0]?.total || 0
     }
   }
+
+  async deleteTweet(tweet_id: string) {
+    const result = await databaseService.tweet.findOneAndDelete({
+      _id: new ObjectId(tweet_id)
+    })
+    return result
+  }
 }
 const tweetServices = new TweetService()
 export default tweetServices

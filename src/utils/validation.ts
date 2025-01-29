@@ -6,7 +6,7 @@ import { EntityError, ErrorWithStatus } from '~/models/Errors';
 
 export const validate = (validation: RunnableValidationChains<ValidationChain>) => {
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    await validation.run(req); //check error send to request
+    await validation.run(req)
     const errors = validationResult(req);
     const errorsObject = errors.mapped()
     if (errors.isEmpty()) {

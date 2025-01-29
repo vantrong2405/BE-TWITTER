@@ -1,8 +1,10 @@
+import { de } from "@faker-js/faker"
 import { NextFunction, Response, Request } from "express"
 import { ParamsDictionary } from "express-serve-static-core"
 import { TweetType } from "~/constants/enum"
 import { TWEET_MESSAGES } from "~/constants/message"
 import { ITweetChildrenRequest, Pagination, TweetParam, TweetQuery } from "~/models/requests/Tweet.request"
+import { TokenPayload } from "~/models/requests/User.requests"
 import Tweet from "~/models/schemas/Tweets.schema"
 import tweetServices from "~/services/tweets.services"
 
@@ -24,7 +26,6 @@ export const getTweetController = async (req: Request, res: Response, next: Next
     updated_at: result.updated_at
   }
   return res.json({
-    message: TWEET_MESSAGES.GET_TWEET_SUCCESS,
     result: tweet
   })
 }
@@ -63,12 +64,21 @@ export const getNewfeedsController = async (req: Request<ParamsDictionary, any, 
     page
   })
   return res.json({
-    message: TWEET_MESSAGES.GET_NEWFEEDS_SUCCESS,
     result: {
       tweets: result.tweets,
       limit,
       page,
       total_page: Math.ceil(result.total / limit)
     }
+  })
+}
+
+export const deleteTweetController = async (req: Request, res: Response) => {
+  const {tweet_id} = req.params
+  console.log("🚀 ~ deleteTweetController ~ tweet_id:", tweet_id)
+  const result = await tweetServices.deleteTweet(tweet_id)
+  return res.json({
+    message: TWEET_MESSAGES.DELETE_TWEET_SUCCESSFULLY,
+    result
   })
 }

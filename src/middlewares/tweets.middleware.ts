@@ -98,22 +98,25 @@ export const createTweetValidator = validate(
       }
     },
     medias: {
+      optional: { options: { nullable: true } }, // Không bắt buộc phải truyền lên, cho phép null hoặc undefined
       isArray: {
-        errorMessage: TWEET_MESSAGES.MEDIA_MUST_BE_AN_ARRAY
+        errorMessage: TWEET_MESSAGES.MEDIA_MUST_BE_AN_ARRAY,
       },
       custom: {
-        options: (value, { req }) => {
-          // Yêu cầu mỗi phần tử trong array là Media
-          if (
-            value.every((item: any) => {
-              return typeof item.url !== 'string' || !mediaType.includes(item.type)
+        options: (value) => {
+          // Nếu giá trị tồn tại thì kiểm tra các phần tử bên trong
+          if (value && Array.isArray(value)) {
+            const isValid = value.every((item: any) => {
+              return typeof item.url === "string" && mediaType.includes(item.type)
             })
-          ) {
-            throw new Error(TWEET_MESSAGES.MEDIA_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT)
+    
+            if (!isValid) {
+              throw new Error(TWEET_MESSAGES.MEDIA_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT)
+            }
           }
-          return true
-        }
-      }
+          return true // Không có giá trị thì không kiểm tra
+        },
+      },
     }
   })
 )

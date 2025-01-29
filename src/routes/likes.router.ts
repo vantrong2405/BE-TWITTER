@@ -5,7 +5,7 @@ import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users
 import { wrapRequestHandler } from '~/utils/handlers'
 const likeRouter = Router()
 likeRouter.post(
-  '/',
+  '/tweet/',
   accessTokenValidator,
   verifiedUserValidator,
   tweetIDValidator,
