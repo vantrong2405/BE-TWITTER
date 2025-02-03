@@ -169,6 +169,30 @@ export const getAllUserController = async (req: Request, res: Response, next: Ne
   })
 }
 
+export const getSuggestedFriendsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { user_id } = req.decoded_authorization as TokenPayload;
+    const limit = Number(req.query.limit) || 10;
+    const page = Number(req.query.page) || 1;
+    const { users, total_page } = await userService.getSuggestedFriends(user_id, limit, page);
+
+    return res.json({
+      result: {
+        users,
+        limit,
+        page,
+        total_page
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const followController = async (req: Request<ParamsDictionary, any, followersReqBody>, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_authorization
   const { followed_user_id } = req.body

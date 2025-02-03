@@ -484,7 +484,7 @@ class UserService {
     const friends = await databaseService.followers
       .find({
         $or: [
-          { user_id: user_id_obj },
+          { user_id: user_id_obj }, // tìm trong bảng followers có user_id và followed_user_id là mình được folow hoặc mình follow họ
           { followed_user_id: user_id_obj }
         ]
       })
@@ -520,6 +520,54 @@ class UserService {
 
     return friendDetails;
   }
+
+  async getSuggestedFriends(user_id: string, limit: number, page: number) {
+    if (!ObjectId.isValid(user_id)) {
+      throw new Error("Invalid user_id");
+    }
+
+    const user_id_obj = new ObjectId(user_id);
+
+    // 🔹 1. Lấy danh sách những người user đã follow
+    const following = await databaseService.followers
+      .find({ user_id: user_id_obj })
+      .toArray();
+
+    const followingUserIds = following.map(follow => follow.followed_user_id.toString());
+
+    // 🔹 2. Đếm tổng số người dùng gợi ý (trừ chính mình và những người đã follow)
+    const total_count = await databaseService.users.countDocuments({
+      _id: { $nin: [user_id_obj, ...followingUserIds.map(id => new ObjectId(id))] }
+    });
+
+    // 🔹 3. Tính tổng số trang
+    const total_page = Math.ceil(total_count / limit);
+
+    // 🔹 4. Lấy danh sách người dùng gợi ý (trừ chính mình và những người đã follow)
+    const users = await databaseService.users
+      .find(
+        {
+          _id: { $nin: [user_id_obj, ...followingUserIds.map(id => new ObjectId(id))] }
+        },
+        {
+          projection: {
+            password: 0,
+            forgot_password_token: 0,
+            email_verify_token: 0,
+            verify: 0,
+            create_at: 0,
+            update_at: 0,
+            permisson_id: 0,
+            role: 0
+          }
+        }
+      )
+      .limit(limit)
+      .skip(limit * (page - 1))
+      .toArray();
+
+    return { users, total_page };
+  };
 
 }
 

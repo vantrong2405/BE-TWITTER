@@ -67,9 +67,9 @@ const createRandomTweet = (user_id: ObjectId) => {
       min: 10,
       max: 160
     }),
-    hashtags: [],
+    hashtags: ["faker" , "tweets"],
     medias: [],
-    mentions: [],
+    mentions: ["6791f8b97828b69d6cca1a00" , "679205567828b69d6cca1a02"],
     parent_id: null,
     user_id
   }
@@ -88,5 +88,6 @@ const insertMultipleTweets = async (ids: ObjectId[]) => {
 }
 insertMultipleUsers(user).then((ids) => {
   followMultipleUsers(new ObjectId(MYID), ids)
+  insertMultipleTweets(ids)
   console.log('Faker Done')
 })
