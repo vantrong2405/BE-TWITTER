@@ -60,7 +60,7 @@ export const emailVerifyController = async (req: Request, res: Response, next: N
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
 
   if (!user) {
-    res.status(HTTP_STATUS.NOTFOUND).json({
+   return res.status(HTTP_STATUS.NOTFOUND).json({
       message: USERS_MESSAGES.USER_NOT_FOUND
     })
   }
@@ -97,7 +97,7 @@ export const deleteDBController = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error('Error deleting database:', error)
-    res.status(500).json({ message: 'Internal Server Error' });
+   return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -105,7 +105,7 @@ export const resenVerifyEmailVerifyController = async (req: Request, res: Respon
   const { user_id } = req.decoded_authorization
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
   if (!user) {
-    res.status(HTTP_STATUS.NOTFOUND).json({
+   return res.status(HTTP_STATUS.NOTFOUND).json({
       message: USERS_MESSAGES.USER_NOT_FOUND
     })
     return
