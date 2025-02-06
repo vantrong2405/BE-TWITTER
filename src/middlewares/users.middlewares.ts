@@ -275,6 +275,7 @@ export const updateMeValidator = validate(
 
 export const verifiedUserValidator = (req: Request, res: Response, next: NextFunction) => {
   const { verify } = req.decoded_authorization as TokenPayload
+  console.log("🚀 ~ verifiedUserValidator ~ verify:", verify)
   if (verify !== UserVerifyStatus.Verified) {
     return next(new ErrorWithStatus({
       message: USERS_MESSAGES.USER_NOT_VERIFIED,

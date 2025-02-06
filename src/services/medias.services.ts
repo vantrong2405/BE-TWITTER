@@ -131,7 +131,7 @@ class MediaService {
 
   async uploadVideoHLS(req: Request) {
     const files = await handleUploadVideo(req)
-    const result = await Promise.all(
+    const result = await Promise.all( 
       files.map(async (file) => {
         queue.enqueue(file.filepath)
         const folder = getNameFromFullName(file.newFilename)

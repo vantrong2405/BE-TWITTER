@@ -208,7 +208,7 @@ class UserService {
         name: userInfo.email.replace('@gmail.com', ''),
         verify: UserVerifyStatus.Verified
       })
-      return { ...data, newUser: 1, verify: UserVerifyStatus.Unverified }
+      return { ...data, newUser: 1, verify: UserVerifyStatus.Verified }
     }
   }
 
